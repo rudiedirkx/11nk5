@@ -1,0 +1,111 @@
+* { margin: 0; padding: 0; }
+menu, command { display: block; }
+html, body {
+	overflow: auto;
+	min-height: 100%;
+}
+body {
+	padding: 6px;
+	font-family: verdana, arial;
+	font-size: 120%;
+}
+input {
+	border: solid 1px #999;
+	background-color: #eee;
+	cursor: default;
+	background-color: #ddd;
+}
+input.button,
+a.hand {
+	cursor: pointer;
+}
+command {
+	cursor: pointer;
+}
+
+#urls {
+	list-style-type: none;
+	line-height: 135%;
+}
+#urls:before {
+	display: block;
+	content: attr(data-num-urls) " results:";
+	max-width: 200px;
+	padding-bottom: 3px;
+	border-bottom: solid 1px #bbb;
+	margin-bottom: 1px;
+}
+#urls li a {
+	font-weight: bold;
+	color: midnightblue;
+	text-decoration: none;
+}
+#urls li a:visited {
+	color: #9696E9;
+}
+#urls li a:hover,
+#urls li a:focus,
+#urls li a:active {
+	color: lime;
+}
+#urls a + span {
+	color: #ccc;
+}
+
+#url_popup {
+	position: absolute;
+	background-color: #ccc;
+	width: 100px;
+	border: solid 1px #fff;
+}
+#url_popup:not(.show) {
+	display: none;
+}
+#url_popup a {
+	display: block;
+	padding: 3px 6px;
+	color: #000;
+	text-decoration: none;
+}
+#url_popup a:not(:first-child) {
+	border-top: solid 1px #fff;
+}
+#url_popup a:hover,
+#url_popup a:focus,
+#url_popup a:active {
+	background-color: #ddd;
+}
+
+#notices {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 0;
+	text-align: center;
+}
+#notices > li {
+	display: inline-block;
+	background: #ddd;
+	border-radius: 0 0 10px 10px;
+	padding: 3px 10px;
+	box-shadow: 0 1px 9px 0 green;
+	cursor: crosshair;
+}
+#notices > li.fail {
+	box-shadow: 0 1px 9px 0 red;
+}
+#notices.hide li,
+#notices > li:not(:last-child) {
+	display: none;
+}
+
+@media all and (min-width: 1000px) {
+	body {
+		font-size: 80%;
+	}
+	#urls a + span {
+		display: none;
+	}
+}
