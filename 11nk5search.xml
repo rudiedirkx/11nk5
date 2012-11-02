@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/"> 
+	<ShortName>11nk5</ShortName> 
+	<Description>Hotblocks 11nk5 database</Description> 
+	<Image height="32" width="32" type="image/x-icon">http://hotblocks.nl/favicon.ico</Image> 
+	<Url type="text/html" method="get" template="http://hotblocks.nl/t/{searchTerms}" /> 
+</OpenSearchDescription> 
