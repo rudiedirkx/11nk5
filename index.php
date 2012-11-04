@@ -174,7 +174,10 @@ function CopyUrlToTags( $f_iUrlId, $f_szTags = "" ) {
 			'tag_id'	=> $iTagId,
 			'utc_added'	=> time(),
 		);
-		$iAdded += (int)$db->insert('l_links', $arrInsert);
+		try {
+			$iAdded += (int)$db->insert('l_links', $arrInsert);
+		}
+		catch ( db_exception $ex ) {}
 	}
 
 	exit('OK' . $iAdded);
