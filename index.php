@@ -49,6 +49,12 @@ else if ( isset($_REQUEST['url'], $_REQUEST['title']) ) {
 	exit(ChangeUrlTitle((int)$_REQUEST['url'], $_REQUEST['title']));
 }
 
+// Get url info //
+else if ( isset($_REQUEST['url']) ) {
+	header('Content-type: application/json; charset="utf-8"');
+	exit(GetUrlUsage($_REQUEST['url']));
+}
+
 // Redirect from code //
 else if ( !empty($_GET['code']) ) {
 	$code = strtoupper($_GET['code']);
@@ -72,6 +78,33 @@ ViewUrlsByTag(valid_tags($szTags));
 
 
 
+
+
+/**
+ * Get URL usage from db
+ */
+function GetUrlUsage( $f_szUrl ) {
+	global $db;
+
+	$urls = $db->select('l_urls', array('url' => $f_szUrl))->all();
+	$tags = array();
+	$ids = array_map(function($url) use ($db, &$tags) {
+		$url->tags = $db->fetch('SELECT t.tag FROM l_links l, l_tags t WHERE t.id = l.tag_id AND l.url_id = ?', array($url->id))->fields('tag');
+		$tags = array_merge($tags, $url->tags);
+		return (int)$url->id;
+	}, $urls);
+
+	if ( $tags ) {
+		$tags = array_count_values($tags);
+		uksort($tags, 'strnatcasecmp');
+	}
+	else {
+		$tags = new stdClass;
+	}
+
+	return json_encode(compact('urls', 'ids', 'tags'));
+
+} // END AddTag()
 
 
 /**
