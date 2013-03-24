@@ -14,6 +14,11 @@ if (isset($_POST['source'], $_POST['target'])) {
 	foreach ($_POST['source'] AS $i => $source) {
 		$target = @$_POST['target'][$i];
 		if ( $source && $target ) {
+			$exists = $db->select_one('l_tags', 'id', array('tag' => $source));
+			if ( $exists ) {
+				exit('<p>&quot;' . html($source) . "&quot; is an existing tag. You can't create it as an alias!</p>");
+			}
+
 			$targetTagId = $db->select_one('l_tags', 'id', array('tag' => $target));
 			if ( $targetTagId ) {
 				$inserts[] = array(
@@ -75,6 +80,14 @@ if (isset($_POST['source'], $_POST['target'])) {
 		</tbody>
 	</table>
 	<p><input type="submit" /></p>
+</form>
+
+<h2>Move between tags</h3>
+
+<form method="post" action>
+	<p>From: <input name="from" placeholder="I am being used incorrectly" /></p>
+	<p>To: <input name="to" placeholder="I am perfect for this job" /></p>
+	<p><input type="submit" disabled /></p>
 </form>
 
 <?php

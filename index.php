@@ -87,28 +87,7 @@ function GetUrlUsage( $f_szUrl ) {
 
 	return json_encode(compact('urls', 'ids', 'tags'));
 
-} // END AddTag()
-
-
-/**
- * Add a TAG
- */
-function AddTag( $f_szTag ) {
-	global $db;
-
-	$f_szTag = strtolower($f_szTag);
-	$iTag = $db->select_one('l_tags', 'id', 'tag = ? ORDER BY id ASC', array(trim($f_szTag)));
-
-	if ( $iTag ) {
-		return $iTag;
-	}
-
-	$arrInsert = array('tag' => $f_szTag);
-	$db->insert('l_tags', $arrInsert);
-
-	return $db->insert_id();
-
-} // END AddTag()
+} // END GetUrlUsage()
 
 
 /**
