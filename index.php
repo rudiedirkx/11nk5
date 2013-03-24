@@ -5,13 +5,7 @@
  * SELECT * FROM l_urls WHERE ( SELECT COUNT(1) FROM l_links WHERE l_links.url_id = l_urls.id AND l_links.tag_id = ANY( SELECT id FROM l_tags WHERE tag = 'hot' OR tag = 'sexy' ) ORDER BY l_links.utc_added DESC ) = 2
  */
 
-// Always
-header('Content-type: text/html; charset="utf-8"');
-
-// Config
-require 'inc.config.php';
-ini_set('date.timezone', 'Europe/Amsterdam');
-error_reporting(E_ALL & ~E_STRICT);
+require 'inc.bootstrap.php';
 
 // Request URI
 $uri = $_SERVER['REQUEST_URI'];
@@ -20,17 +14,6 @@ if ( 1 < count($x = explode('?', $uri, 2)) ) {
 	parse_str($x[1], $g);
 	$_GET += $g;
 }
-
-// Database
-require 'inc.db.php';
-if ( !$db ) {
-	header('HTTP/1.1 500 Connection error', true, 500);
-	exit('Connection error');
-}
-
-// Xnary
-require 'Xnary.php';
-Xnary::$range = implode(range('A', 'Z')) . implode(range('0', '9'));
 
 
 
@@ -257,14 +240,18 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 		$szQuery = 'SELECT * FROM l_urls ORDER BY id DESC LIMIT 250;';
 	}
 	else {
-		if ( strstr($g_szTag, "/") ) {
-			$and = false;
-			$tags = preg_split('#[\/\s]+#', $g_szTag);
+		$tags = preg_split('#[\/\s]+#', $g_szTag);
+		$and = !strstr($g_szTag, "/");
+
+		$aliases = getAliasTags($tags);
+		if ( $aliases ) {
+			$tags = array_flip(array_merge($tags, $aliases));
+			foreach ( $aliases AS $alias => $tag ) {
+				unset($tags[$alias]);
+			}
+			$tags = array_values(array_flip($tags));
 		}
-		else {
-			$and = true;
-			$tags = preg_split('#\s+#', $g_szTag);
-		}
+
 		$szQuery = $db->replaceholders('
 			SELECT u.*, COUNT(1) as matching
 			FROM l_links l, l_tags t, l_urls u
@@ -282,25 +269,5 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 	require 'tpl.index.php';
 
 } // END ViewUrlsByTag()
-
-
-
-
-
-
-
-// M I S C //
-
-function html( $html ) {
-	return htmlspecialchars($html, ENT_COMPAT, 'UTF-8');
-}
-
-function valid_tags( $f_szTags ) {
-	return implode(' ', array_filter(array_map('valid_tag', explode(' ', $f_szTags))));
-}
-
-function valid_tag( $f_szTag ) {
-	return strtolower(preg_replace("%[^~a-zA-Z0-9\.\-\+_//]%", '', $f_szTag));
-}
 
 
