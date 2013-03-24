@@ -52,7 +52,7 @@ foreach ( $arrUrls AS $objUrl ) {
 		$title = trim($objUrl->title) ?: $url;
 
 		echo '
-			<li>
+			<li data-id="' . $id . '">
 				<a contextmenu="url_popup" data-id="' . $id . '" title="[' . html($domain) . '] ' . html($szTags) . '" id="url_' . $id . '" href="' . $szOutUrl . '">' . html( 0 < strlen(trim($objUrl->title)) ? trim($objUrl->title) : $url ) . '</a>
 				<span>['.html($domain).'] '.html($szTags).'</span>
 			</li>' .

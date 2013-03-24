@@ -6,8 +6,7 @@ html, body {
 }
 body {
 	padding: 6px;
-	font-family: verdana, arial;
-	font-size: 120%;
+	font-family: sans-serif;
 }
 input {
 	border: solid 1px #999;
@@ -35,6 +34,9 @@ command {
 	border-bottom: solid 1px #bbb;
 	margin-bottom: 1px;
 }
+#urls li:nth-child(odd) {
+	background: #eee;
+}
 #urls li a {
 	font-weight: bold;
 	color: midnightblue;
@@ -49,7 +51,7 @@ command {
 	color: lime;
 }
 #urls a + span {
-	color: #ccc;
+	color: #bbb;
 }
 
 #url_popup {
@@ -102,8 +104,8 @@ command {
 }
 
 @media all and (min-width: 1000px) {
-	body {
-		font-size: 80%;
+	#urls li:nth-child(odd) {
+		background: #f7f7f7;
 	}
 	#urls a + span {
 		display: none;

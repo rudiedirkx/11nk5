@@ -250,51 +250,31 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 
 	$mobile = isset($_GET['mobile']) || ( isset($_SERVER['HTTP_USER_AGENT']) && is_int(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'mobi')) );
 
-	$arrInTags = explode(' ', $g_szTag);
-	$szWhereClause = 1 == count($arrInTags) ? "(l_tags.tag = '".$arrInTags[0]."')" : "(l_tags.tag = '".implode("' OR l_tags.tag = '", $arrInTags)."')";
+	// $arrInTags = explode(' ', $g_szTag);
+	// $szWhereClause = 1 == count($arrInTags) ? "(l_tags.tag = '".$arrInTags[0]."')" : "(l_tags.tag = '".implode("' OR l_tags.tag = '", $arrInTags)."')";
 
 	if ( '~new' == $g_szTag ) {
-		$szQuery = 'SELECT * FROM l_urls ORDER BY id DESC LIMIT 50;';
+		$szQuery = 'SELECT * FROM l_urls ORDER BY id DESC LIMIT 250;';
 	}
-	else if ( strstr($g_szTag, "/") ) {
-		# OR #
-		$arrTags = explode(" ", preg_replace("/([ ]{2,})/", " ", trim(str_replace("+", " ", str_replace("/", " ", $g_szTag)))));
-		$szQuery = "
-			SELECT
-				DISTINCT l_urls.*
-			FROM
-				l_links,
-				l_tags,
-				l_urls
-			WHERE
-				(l_links.tag_id = l_tags.id) AND
-				(l_links.url_id = l_urls.id) AND
-				(l_tags.tag = '".implode("' OR l_tags.tag = '", $arrTags)."')
-			ORDER BY
-				l_links.utc_added DESC;";
-	}
-	else
-	{
-		# AND #
-		$arrTags = explode(" ", preg_replace("/([ ]{2,})/", " ", trim(str_replace("+", " ", str_replace("/", " ", $g_szTag)))));
-		$szQuery = "
-			SELECT
-				u.*,
-				COUNT(DISTINCT t.tag) AS num_tags
-			FROM
-				l_links l,
-				l_tags t,
-				l_urls u
-			WHERE
-				l.tag_id = t.id AND
-				u.id = l.url_id AND
-				t.tag IN('".implode("','", $arrTags)."')
-			GROUP BY
-				l.url_id
-			HAVING
-				num_tags = ".count($arrTags)."
-			ORDER BY
-				l.utc_added DESC;";
+	else {
+		if ( strstr($g_szTag, "/") ) {
+			$and = false;
+			$tags = preg_split('#[\/\s]+#', $g_szTag);
+		}
+		else {
+			$and = true;
+			$tags = preg_split('#\s+#', $g_szTag);
+		}
+		$szQuery = $db->replaceholders('
+			SELECT u.*, COUNT(1) as matching
+			FROM l_links l, l_tags t, l_urls u
+			WHERE l.url_id = u.id AND l.tag_id = t.id AND t.tag in (?)
+			GROUP BY u.id
+		', array($tags));
+		if ( $and ) {
+			$szQuery .= $db->replaceholders(' HAVING matching = ?', array(count($tags)));
+		}
+		$szQuery .= ' ORDER BY u.id DESC';
 	}
 
 	$arrUrls = $db->fetch($szQuery)->all();
