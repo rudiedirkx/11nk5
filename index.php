@@ -116,7 +116,7 @@ function _AddLink( $f_szUrl, $f_szTitle, $f_szTags ) {
 	global $db;
 
 	$szUrl	 = trim($f_szUrl);
-	$arrTags = explode(' ', str_replace('/', ' ', valid_tags($f_szTags)));
+	$arrTags = unaliasTags(explode(' ', str_replace('/', ' ', valid_tags($f_szTags))));
 	$szTitle = trim($f_szTitle);
 	if ( !$arrTags || !$szUrl ) {
 		return 'ERROR:' . __LINE__;
@@ -155,7 +155,7 @@ function CopyUrlToTags( $f_iUrlId, $f_szTags = "" ) {
 
 	global $db;
 
-	$arrTags = explode(" ", str_replace('/', ' ', str_replace('+', ' ', valid_tags($f_szTags))));
+	$arrTags = unaliasTags(explode(" ", str_replace('/', ' ', str_replace('+', ' ', valid_tags($f_szTags)))));
 	$iUrlId = (int)$f_iUrlId;
 
 	$iAdded = 0;
@@ -219,17 +219,8 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 		$szQuery = 'SELECT * FROM l_urls ORDER BY id DESC LIMIT 250;';
 	}
 	else {
-		$tags = preg_split('#[\/\s]+#', $g_szTag);
+		$tags = unaliasTags(preg_split('#[\/\s]+#', $g_szTag));
 		$and = !strstr($g_szTag, "/");
-
-		$aliases = getAliasTags($tags);
-		if ( $aliases ) {
-			$tags = array_flip(array_merge($tags, $aliases));
-			foreach ( $aliases AS $alias => $tag ) {
-				unset($tags[$alias]);
-			}
-			$tags = array_values(array_flip($tags));
-		}
 
 		$szQuery = $db->replaceholders('
 			SELECT u.*, COUNT(1) as matching
