@@ -7,14 +7,6 @@
 
 require 'inc.bootstrap.php';
 
-// Request URI
-$uri = $_SERVER['REQUEST_URI'];
-if ( 1 < count($x = explode('?', $uri, 2)) ) {
-	$_SERVER['REQUEST_URI'] = $x[0];
-	parse_str($x[1], $g);
-	$_GET += $g;
-}
-
 
 
 // Add url //
@@ -208,7 +200,8 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 
 	$g_szTag = $f_szTags;
 
-	$szBasePath = dirname($_SERVER['PHP_SELF']) . '/';
+	$script = $_SERVER['PHP_SELF'];
+	$szBasePath = rtrim(dirname($script), '/') . '/';
 
 	$mobile = isset($_GET['mobile']) || ( isset($_SERVER['HTTP_USER_AGENT']) && is_int(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'mobi')) );
 

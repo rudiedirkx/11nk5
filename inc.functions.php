@@ -49,5 +49,5 @@ function valid_tags( $f_szTags ) {
 }
 
 function valid_tag( $f_szTag ) {
-	return strtolower(preg_replace("%[^~a-zA-Z0-9\.\-\+_//]%", '', $f_szTag));
+	return trim(strtolower(preg_replace("%[^~a-zA-Z0-9\.\-\+_//]%", '', $f_szTag)), '/');
 }

@@ -93,6 +93,7 @@ else if ( isset($_POST['from'], $_POST['to']) ) {
 			$db->rollback();
 			echo '<pre>&gt; ' . $ex->query . ':<br><br>' . $ex->getMessage() . '</pre>';
 			throw $ex;
+			exit;
 		}
 	}
 
