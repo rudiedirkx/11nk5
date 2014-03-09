@@ -66,8 +66,8 @@ foreach ( $arrUrls AS $objUrl ) {
 <? if (!$mobile): ?>
 	<menu type="context" id="url_popup">
 		<!-- <command class="default" id="cmd-open" label="open" /> -->
-		<command id="cmd-copy" label="copy" />
-		<command id="cmd-edit" label="edit title" />
+		<command id="cmd-copy" label="Copy" />
+		<command id="cmd-edit" label="Edit title" />
 	</menu>
 
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>

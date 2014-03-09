@@ -56,26 +56,26 @@ command {
 
 #url_popup {
 	position: absolute;
-	background-color: #ccc;
-	width: 100px;
-	border: solid 1px #fff;
+	background-color: #fff;
+	width: 200px;
+	padding: 2px 0;
+	border: solid 1px #555;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 #url_popup:not(.show) {
 	display: none;
 }
 #url_popup a {
 	display: block;
-	padding: 3px 6px;
+	padding: 3px 6px 3px 32px;
 	color: #000;
 	text-decoration: none;
-}
-#url_popup a:not(:first-child) {
-	border-top: solid 1px #fff;
 }
 #url_popup a:hover,
 #url_popup a:focus,
 #url_popup a:active {
-	background-color: #ddd;
+	background-color: #4281f4;
+	color: white;
 }
 
 #notices {
