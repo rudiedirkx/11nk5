@@ -18,20 +18,23 @@ header('Content-type: text/plain');
 
 echo "I AM A LOCAL WEBHOOK\n\n";
 
-$note = trim(@$_REQUEST['notes'] ?: @$_REQUEST['title']);
+$body = trim(@$_REQUEST['title'] . "" . @$_REQUEST['notes']);
 
-// debug //
-$note = 'Oele
-
+/* DEBUG *
+$body = '
 http://oele.boele.com/blaaa
 
 oele boele bla';
-// debug //
+/* DEBUG */
 
-if ( preg_match('#https?://\S+#', $note, $match, PREG_OFFSET_CAPTURE) ) {
-	$title = trim(substr($note, 0, $match[0][1]));
+if ( preg_match('#https?://\S+#', $body, $match, PREG_OFFSET_CAPTURE) ) {
 	$url = $match[0][0];
-	$tags = trim(substr($note, $match[0][1] + strlen($url)));
+	$title = trim(substr($body, 0, $match[0][1])) ?: $url;
+	$tags = trim(substr($body, $match[0][1] + strlen($url)));
+// var_dump($title, $url, $tags);
+// exit;
 
 	_AddLink($url, $title, $tags);
 }
+
+exit("Not good ennough input...");
