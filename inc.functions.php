@@ -1,5 +1,60 @@
 <?php
 
+/**
+ * Add a LINK between TAGS and a URL
+ */
+function _AddLink( $f_szUrl, $f_szTitle, $f_szTags ) {
+	global $db;
+
+	$szUrl	 = trim($f_szUrl);
+	$arrTags = unaliasTags(explode(' ', str_replace('/', ' ', valid_tags($f_szTags))));
+	$szTitle = trim($f_szTitle);
+	if ( !$arrTags || !$szUrl ) {
+		return 'ERROR:' . __LINE__;
+	}
+
+	// Add url
+	$iUrlId = AddUrl($szUrl, $szTitle);
+
+	foreach ( $arrTags AS $szTag ) {
+		// Add tag
+		$iTagId = AddTag($szTag);
+
+		// Insert relation
+		try {
+			$db->insert('l_links', array(
+				'url_id'	=> $iUrlId,
+				'tag_id'	=> $iTagId,
+				'utc_added'	=> time(),
+			));
+		}
+		catch ( db_exception $ex ) {}
+	}
+
+	exit('OK');
+
+} // END _AddLink()
+
+
+/**
+ * Add a URL
+ */
+function AddUrl( $f_szUrl, $f_szTitle ) {
+	global $db;
+
+	$iUrl = $db->select_one('l_urls', 'id', array('url' => $f_szUrl));
+	if ( $iUrl ) {
+		return $iUrl;
+	}
+
+	$arrInsert = array('url' => $f_szUrl, 'title' => $f_szTitle);
+	$db->insert('l_urls', $arrInsert);
+
+	return $db->insert_id();
+
+} // END AddUrl()
+
+
 function AddTag( $f_szTag ) {
 	global $db;
 
