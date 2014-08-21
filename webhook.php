@@ -4,7 +4,7 @@
  * Input format:
  *
  * >
- * > Title
+ * > Title (optional)
  * >
  * > URL
  * >
@@ -16,9 +16,9 @@ require 'inc.bootstrap.php';
 
 header('Content-type: text/plain');
 
-echo "I AM A LOCAL WEBHOOK\n\n";
+echo "I AM A LIVE WEBHOOK\n\n";
 
-$body = trim(@$_REQUEST['title'] . "" . @$_REQUEST['notes']);
+$body = trim(@$_REQUEST['title'] . "\n\n" . @$_REQUEST['notes']);
 
 /* DEBUG *
 $body = '
@@ -35,6 +35,7 @@ if ( preg_match('#https?://\S+#', $body, $match, PREG_OFFSET_CAPTURE) ) {
 // exit;
 
 	_AddLink($url, $title, $tags);
+	exit('OK');
 }
 
 exit("Not good ennough input...");
