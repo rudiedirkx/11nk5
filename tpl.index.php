@@ -70,7 +70,7 @@ foreach ( $arrUrls AS $objUrl ) {
 		<command id="cmd-edit" label="Edit title" />
 	</menu>
 
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="//code.jquery.com/jquery-latest.min.js"></script>
 	<script>document.URI = '<?= $szBasePath ?>index.php'</script>
 	<script src="<?= $szBasePath ?>11nk5.js"></script>
 <? endif ?>
