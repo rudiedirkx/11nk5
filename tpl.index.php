@@ -63,6 +63,19 @@ foreach ( $arrUrls AS $objUrl ) {
 ?>
 </ul>
 
+<?php
+
+$https = !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off';
+$protocol = $https ? 'https' : 'http';
+$domain = $_SERVER['HTTP_HOST'];
+$path = dirname($_SERVER['PHP_SELF']);
+$bookmarklet = "javascript: (document.head||document.documentElement).appendChild((function(el, tags) { if (tags) { el.src='" . $protocol . "://" . $domain . $path . "/bookmarklet.php?url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&tags=' + encodeURIComponent(tags); return el; } })(document.createElement('script'), prompt('Tags:', ''))); void(0)";
+
+?>
+
+<br />
+<p><a href="<?= $bookmarklet ?>">Drag this to your bookmarks</a> or (<a href="#" onclick="prompt('Copy this:', '<?= addslashes($bookmarklet) ?>'); return false">copy it</a>)</p>
+
 <? if (!$mobile): ?>
 	<menu type="context" id="url_popup">
 		<!-- <command class="default" id="cmd-open" label="open" /> -->

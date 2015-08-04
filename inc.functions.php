@@ -31,7 +31,7 @@ function _AddLink( $f_szUrl, $f_szTitle, $f_szTags ) {
 		catch ( db_exception $ex ) {}
 	}
 
-	exit('OK');
+	return 'OK';
 
 } // END _AddLink()
 

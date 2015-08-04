@@ -177,5 +177,3 @@ function ViewUrlsByTag( $f_szTags = '' ) {
 	require 'tpl.index.php';
 
 } // END ViewUrlsByTag()
-
-
