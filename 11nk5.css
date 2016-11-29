@@ -1,5 +1,5 @@
 * { margin: 0; padding: 0; }
-menu, command { display: block; }
+menu, menuitem { display: block; }
 html, body {
 	overflow: auto;
 	min-height: 100%;
@@ -18,7 +18,7 @@ input.button,
 a.hand {
 	cursor: pointer;
 }
-command {
+menuitem {
 	cursor: pointer;
 }
 
@@ -65,15 +65,15 @@ command {
 #url_popup:not(.show) {
 	display: none;
 }
-#url_popup a {
+#url_popup > * {
 	display: block;
 	padding: 3px 6px 3px 32px;
 	color: #000;
 	text-decoration: none;
 }
-#url_popup a:hover,
-#url_popup a:focus,
-#url_popup a:active {
+#url_popup > *:hover,
+#url_popup > *:focus,
+#url_popup > *:active {
 	background-color: #4281f4;
 	color: white;
 }

@@ -78,9 +78,8 @@ $bookmarklet = "javascript: (document.head||document.documentElement).appendChil
 
 <? if (!$mobile): ?>
 	<menu type="context" id="url_popup">
-		<!-- <command class="default" id="cmd-open" label="open" /> -->
-		<command id="cmd-copy" label="Copy" />
-		<command id="cmd-edit" label="Edit title" />
+		<menuitem id="cmd-copy" label="Copy">Copy</menuitem>
+		<menuitem id="cmd-edit" label="Edit title">Edit title</menuitem>
 	</menu>
 
 	<script src="//code.jquery.com/jquery-latest.min.js"></script>

@@ -70,19 +70,19 @@
 			$('#url_'+id).html(renamed[id])
 		}
 
-		// <command> polyfill
-		$('command').each(function(i, cmd) {
-			cmd = $(cmd)
-			cmd.replaceWith('<a id="' + cmd.attr('id') + '" href="#" onclick="return false">' + cmd.attr('label') + '</a>')
+		// remember context
+		$('a').on('focus', function(e) {
+			context = $(e.target)
 		})
 
 		// open context menu
-		$('#urls a').on('contextmenu', function(e) {
-			e.preventDefault()
+		if (!('HTMLMenuItemElement' in window)) {
+			$('#urls a').on('contextmenu', function(e) {
+				e.preventDefault()
 
-			context = $(e.target)
-			displayPopup(e.pageX, e.pageY);
-		})
+				displayPopup(e.pageX, e.pageY)
+			})
+		}
 
 		// close context menu
 		$(document).on('keydown', function(e, t) {
