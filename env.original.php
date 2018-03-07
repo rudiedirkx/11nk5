@@ -4,6 +4,3 @@ define('DB_HOST', 'localhost');
 define('DB_USER', 'user');
 define('DB_PASS', 'pass');
 define('DB_NAME', 'database');
-
-// https://github.com/rudiedirkx/db_generic
-define('DB_PATH', '/var/www/share/db');

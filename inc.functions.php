@@ -7,10 +7,13 @@ function _AddLink( $f_szUrl, $f_szTitle, $f_szTags ) {
 	global $db;
 
 	$szUrl	 = trim($f_szUrl);
-	$arrTags = unaliasTags(explode(' ', str_replace('/', ' ', valid_tags($f_szTags))));
+	$arrTags = array_filter(unaliasTags(explode(' ', str_replace('/', ' ', valid_tags($f_szTags)))));
 	$szTitle = trim($f_szTitle);
-	if ( !$arrTags || !$szUrl ) {
-		return 'ERROR:' . __LINE__;
+	if ( !$arrTags ) {
+		return 'Missing tags';
+	}
+	if ( !$szUrl ) {
+		return 'Missing URL';
 	}
 
 	// Add url
