@@ -13,3 +13,4 @@ if ( isset($_REQUEST['url'], $_REQUEST['title'], $_REQUEST['tags']) ) {
 ?>
 
 alert('<?= addslashes($message) ?>');
+document.querySelector('.loading-11nk5').remove();

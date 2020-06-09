@@ -68,13 +68,14 @@ foreach ( $arrUrls AS $objUrl ) {
 $https = !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off';
 $protocol = $https ? 'https' : 'http';
 $domain = $_SERVER['HTTP_HOST'];
-$path = dirname($_SERVER['PHP_SELF']);
-$bookmarklet = "javascript: (document.head||document.documentElement).appendChild((function(el, tags) { if (tags) { el.src='" . $protocol . "://" . $domain . $path . "/bookmarklet.php?url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&tags=' + encodeURIComponent(tags); return el; } })(document.createElement('script'), prompt('Tags:', ''))); void(0)";
+$path = dirname($_SERVER['SCRIPT_NAME']);
+$base = $protocol . '://' . $domain . str_replace('//', '/', $path . '/') . 'bookmarklet.php';
+$bookmarklet = preg_replace('#[\r\n\t]#', '', str_replace('__BASE__', $base, file_get_contents(__DIR__ . '/bookmarklet.js')));
 
 ?>
 
 <br />
-<p><a href="<?= $bookmarklet ?>">Drag this to your bookmarks</a> or (<a href="#" onclick="prompt('Copy this:', '<?= addslashes($bookmarklet) ?>'); return false">copy it</a>)</p>
+<p><a href="<?= html($bookmarklet) ?>">Drag this to your bookmarks</a> or (<a href="#" onclick="prompt('Copy this:', '<?= html(addslashes($bookmarklet)) ?>'); return false">copy it</a>)</p>
 
 <? if (!$mobile): ?>
 	<menu type="context" id="url_popup">
