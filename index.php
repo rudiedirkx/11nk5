@@ -44,7 +44,7 @@ else if ( !empty($_GET['code']) ) {
 }
 
 // View tags //
-$szTags = trim(@$_GET['tags']) ?: trim(@$_GET['t']) ?: '';
+$szTags = trim($_GET['tags'] ?? '') ?: trim($_GET['t'] ?? '') ?: '';
 ViewUrlsByTag(valid_tags($szTags));
 
 
